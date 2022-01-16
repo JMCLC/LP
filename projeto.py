@@ -102,5 +102,11 @@ def actualiza_vizinhas_apos_pontes(Estado, Pos1, Pos2, Novo_Estado):
     return Novo_Estado
 
 def ilhas_terminadas(Estado, Ilhas_Term):
+    res = []
+    for i in range(len(Estado)):
+        if len(Estado[i][2]) == Estado[i][0]:
+            res.append(Estado[i][0])
+    Ilhas_Term = res
+    return Ilhas_Term
 
 print(extrai_ilhas_linha(7, [4, 0, 0, 2, 0, 0, 0] , []))
