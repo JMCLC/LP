@@ -108,5 +108,3 @@ def ilhas_terminadas(Estado, Ilhas_Term):
             res.append(Estado[i][0])
     Ilhas_Term = res
     return Ilhas_Term
-
-print(extrai_ilhas_linha(7, [4, 0, 0, 2, 0, 0, 0] , []))
