@@ -1,11 +1,24 @@
 :- [codigo_comum].
 
+extrai_ilhas_linha_aux([], _, _, Ilhas, Res) :-
+    Res = Ilhas.
+extrai_ilhas_linha_aux([Valor | Resto], Index, N_L, Ilhas, Res) :-
+    Novo_Index is Index + 1,
+    (Valor =\= 0 -> Nova_Ilha = ilha(Valor,(N_L,Novo_Index)), append(Ilhas, [Nova_Ilha], Nova_Lista), extrai_ilhas_linha_aux(Resto, Novo_Index, N_L, Nova_Lista, Res); extrai_ilhas_linha_aux(Resto, Novo_Index, N_L, Ilhas, Res)).
+
 extrai_ilhas_linha(N_L, Linha, Ilhas) :-
-    findall(Nova_Ilha, (member(Valor_Atual, Linha), nth1(Index, Linha, Valor_Atual), Valor_Atual =\= 0, Nova_Ilha = ilha(Valor_Atual,(N_L,Index))), Novas_Ilhas),
-    list_to_set(Novas_Ilhas, Ilhas).
+    extrai_ilhas_linha_aux(Linha, 0, N_L, [], Ilhas).
     
+ilhas_aux([], _, Ilhas, Res) :-
+    Res = Ilhas.
+ilhas_aux([Linha | Resto], N_L, Ilhas, Res) :-
+    Novo_N_L is N_L + 1,
+    extrai_ilhas_linha(Novo_N_L, Linha, Ilhas_Novas),
+    append(Ilhas, Ilhas_Novas, Nova_Lista),
+    ilhas_aux(Resto, Novo_N_L, Nova_Lista, Res).
+
 ilhas(Puz, Ilhas) :-
-    bagof(Ilha, Linha_Atual^Index_Atual^Ilhas_Atuais^(member(Linha_Atual, Puz), nth1(Index_Atual, Puz, Linha_Atual), extrai_ilhas_linha(Index_Atual, Linha_Atual, Ilhas_Atuais), member(Ilha, Ilhas_Atuais)), Ilhas).
+    ilhas_aux(Puz, 0, [], Ilhas).
 
 ilha_existe_linha([], _, Res) :-
     Res = [].
